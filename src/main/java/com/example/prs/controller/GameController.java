@@ -45,9 +45,8 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{userId}/statistics")
-    public @ResponseBody ResponseEntity<List<Game>> statistics(@PathVariable UUID userId) {
-        //List<Game> userGames = repository.findAllByUserId(userId);
-        return ResponseEntity.ok().build();
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<Game>> findAll(@PathVariable UUID userId) {
+        return ResponseEntity.ok(gameService.getAllGamesOfUser(userId));
     }
 }

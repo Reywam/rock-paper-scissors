@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -65,5 +66,10 @@ public class GameService {
                 .orElseThrow(GameNotFoundException::new);
         game.setTerminated(true);
         repository.save(game);
+    }
+
+    public List<Game> getAllGamesOfUser(UUID userId) {
+        Player player = userRepository.findOneById(userId);
+        return repository.findAllByPlayer(player);
     }
 }

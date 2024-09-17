@@ -1,5 +1,6 @@
 package com.example.prs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -20,6 +21,7 @@ public class Game {
 
     @ManyToOne
     @JoinColumn(name = "id")
+    @JsonIgnore
     private Player player;
     private LocalDate playDate;
 
