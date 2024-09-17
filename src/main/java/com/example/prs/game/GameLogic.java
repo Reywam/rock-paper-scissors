@@ -1,5 +1,7 @@
 package com.example.prs.game;
 
+import com.example.prs.repository.ResultRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -7,8 +9,9 @@ import java.util.Random;
 
 import static com.example.prs.game.Action.*;
 
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class GameLogic {
     private final static Action[] POSSIBLE_MOVES = Action.values();
 
