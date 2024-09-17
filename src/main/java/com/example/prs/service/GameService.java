@@ -4,6 +4,7 @@ import com.example.prs.entity.Game;
 import com.example.prs.entity.Player;
 import com.example.prs.entity.Result;
 import com.example.prs.exceptions.GameNotFoundException;
+import com.example.prs.exceptions.GameTerminatedException;
 import com.example.prs.game.Action;
 import com.example.prs.game.GameLogic;
 import com.example.prs.game.GameResult;
@@ -41,9 +42,13 @@ public class GameService {
         return game.getGameId();
     }
 
-    public GameResult makeMove(UUID gameId, Action playerMove) throws GameNotFoundException {
+    public GameResult makeMove(UUID gameId, Action playerMove) throws GameNotFoundException, GameTerminatedException {
         Game game = repository.findById(gameId)
                 .orElseThrow(GameNotFoundException::new);
+
+        if (game.isTerminated()) {
+            throw new GameTerminatedException();
+        }
 
         GameResult gameResult = gameLogic.playGame(playerMove);
         log.info("Game result is {}", gameResult.name());

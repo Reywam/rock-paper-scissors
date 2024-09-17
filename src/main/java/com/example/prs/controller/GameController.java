@@ -2,6 +2,7 @@ package com.example.prs.controller;
 
 import com.example.prs.entity.Game;
 import com.example.prs.exceptions.GameNotFoundException;
+import com.example.prs.exceptions.GameTerminatedException;
 import com.example.prs.game.Action;
 import com.example.prs.game.GameLogic;
 import com.example.prs.game.GameResult;
@@ -30,7 +31,7 @@ public class GameController {
     }
 
     @PatchMapping("/{gameId}/move/{playerMove}")
-    public ResponseEntity<?> makeMove(@PathVariable UUID gameId, @PathVariable Action playerMove) throws GameNotFoundException {
+    public ResponseEntity<?> makeMove(@PathVariable UUID gameId, @PathVariable Action playerMove) throws GameNotFoundException, GameTerminatedException {
         GameResult result = gameService.makeMove(gameId, playerMove);
         return ResponseEntity.ok(result);
     }
