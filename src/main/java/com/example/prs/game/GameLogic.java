@@ -1,18 +1,29 @@
 package com.example.prs.game;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.util.Random;
 
 import static com.example.prs.game.Action.*;
 
+@Service
+@Slf4j
 public class GameLogic {
     private final static Action[] POSSIBLE_MOVES = Action.values();
 
-    public Action makeMove() {
+    public GameResult playGame(Action playerMove) {
+        Action computerMove = makeMove();
+        log.info("Computer move is {}, player move {}", computerMove.name(), playerMove.name());
+        return checkResult(playerMove, computerMove);
+    }
+
+    private Action makeMove() {
         int nextMoveId = new Random().nextInt(POSSIBLE_MOVES.length);
         return POSSIBLE_MOVES[nextMoveId];
     }
 
-    public GameResult checkResult(Action playerMove, Action computerMove) {
+    private GameResult checkResult(Action playerMove, Action computerMove) {
         if (playerMove == ROCK) {
             if (computerMove == SCISSORS) {
                 return GameResult.PLAYER_WIN;

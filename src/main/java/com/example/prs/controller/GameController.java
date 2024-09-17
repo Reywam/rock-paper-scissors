@@ -2,6 +2,8 @@ package com.example.prs.controller;
 
 import com.example.prs.entity.Game;
 import com.example.prs.exceptions.GameNotFoundException;
+import com.example.prs.game.Action;
+import com.example.prs.game.GameLogic;
 import com.example.prs.game.GameResult;
 import com.example.prs.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GameController {
     private final GameRepository repository;
+    private final GameLogic gameLogic;
 
     @PostMapping("/start")
     public ResponseEntity<UUID> startGame() {
@@ -32,12 +35,17 @@ public class GameController {
         return ResponseEntity.ok().body(game.getGameId());
     }
 
-    @PatchMapping("/{gameId}/move")
-    public ResponseEntity<?> makeMove(@PathVariable UUID gameId) throws GameNotFoundException {
-        Game game = repository.findById(gameId).get();//.orElseThrow(GameNotFoundException::new);
+    @PatchMapping("/{gameId}/move/{playerMove}")
+    public ResponseEntity<?> makeMove(@PathVariable UUID gameId, @PathVariable Action playerMove) throws GameNotFoundException {
+        Game game = repository.findById(gameId)
+                .orElseThrow(GameNotFoundException::new);
+        GameResult gameResult = gameLogic.playGame(playerMove);
+        log.info("Game result is {}", gameResult.name());
 
-        log.info("Make move in game with id: {}", game.getGameId());
-        return ResponseEntity.ok().build();
+        game.setResult(gameResult);
+        repository.save(game);
+
+        return ResponseEntity.ok(gameResult);
     }
 
     @PutMapping("/{gameId}/terminate")
