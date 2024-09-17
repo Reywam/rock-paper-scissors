@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface ResultRepository extends JpaRepository<Result, UUID> {
-    public Result findOneByName(String name);
+    Result findOneByName(String name);
 }
