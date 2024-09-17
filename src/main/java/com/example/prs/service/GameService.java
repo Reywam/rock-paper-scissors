@@ -67,9 +67,4 @@ public class GameService {
         game.setTerminated(true);
         repository.save(game);
     }
-
-    public List<Game> getAllGamesOfUser(UUID userId) {
-        Player player = userRepository.findOneById(userId);
-        return repository.findAllByPlayer(player);
-    }
 }

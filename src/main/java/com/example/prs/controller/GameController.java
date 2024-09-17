@@ -47,17 +47,4 @@ public class GameController {
 
         return ResponseEntity.ok().build();
     }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<GameOutDto>> findAll(@PathVariable UUID userId) {
-        List<Game> gameEntities = gameService.getAllGamesOfUser(userId);
-        List<GameOutDto> outDtos = gameEntities.stream()
-                .map(e -> {
-                    List<String> mappedResults = e.getResults().stream()
-                            .map(Result::getName)
-                            .collect(Collectors.toList());
-                    return new GameOutDto(e.getGameId(), e.getPlayDate(), mappedResults, e.isTerminated());
-                }).collect(Collectors.toList());
-        return ResponseEntity.ok(outDtos);
-    }
 }
