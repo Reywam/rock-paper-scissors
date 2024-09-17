@@ -17,18 +17,18 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class GameService {
-    private final GameRepository repository;
+    private final GameRepository gameRepository;
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
 
     private final GameLogic gameLogic;
+    // Predefined user for demonstration purposes
     private final UUID USER_ID = UUID.fromString("ab18c338-b95e-4a2a-aa04-2e950d9fa909");
 
     public Game createNewGame() {
@@ -38,14 +38,14 @@ public class GameService {
         game.setResults(new ArrayList<>());
         game.setPlayDate(LocalDate.now());
         game.setPlayer(player);
-        repository.save(game);
+
+        gameRepository.save(game);
 
         return game;
     }
 
     public GameResult makeMove(UUID gameId, Action playerMove) throws GameNotFoundException, GameTerminatedException {
-        Game game = repository.findById(gameId)
-                .orElseThrow(GameNotFoundException::new);
+        Game game = findGame(gameId);
 
         if (game.isTerminated()) {
             throw new GameTerminatedException();
@@ -62,9 +62,12 @@ public class GameService {
     }
 
     public void terminate(UUID gameId) throws GameNotFoundException {
-        Game game = repository.findById(gameId)
-                .orElseThrow(GameNotFoundException::new);
+        Game game = findGame(gameId);
         game.setTerminated(true);
-        repository.save(game);
+        gameRepository.save(game);
+    }
+
+    private Game findGame(UUID gameId) throws GameNotFoundException {
+        return gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
     }
 }

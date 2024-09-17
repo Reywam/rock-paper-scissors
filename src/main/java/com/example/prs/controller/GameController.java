@@ -29,7 +29,8 @@ public class GameController {
     }
 
     @PatchMapping("/{gameId}/move/{playerMove}")
-    public ResponseEntity<?> makeMove(@PathVariable UUID gameId, @PathVariable Action playerMove) throws GameNotFoundException, GameTerminatedException {
+    public ResponseEntity<?> makeMove(@PathVariable UUID gameId, @PathVariable Action playerMove)
+            throws GameNotFoundException, GameTerminatedException {
         GameResult result = gameService.makeMove(gameId, playerMove);
         return ResponseEntity.ok(result);
     }

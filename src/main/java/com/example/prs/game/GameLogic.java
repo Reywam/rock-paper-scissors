@@ -34,7 +34,6 @@ public class GameLogic {
             if (computerMove == PAPER) {
                 return GameResult.COMPUTER_WIN;
             }
-            return GameResult.DRAW;
         }
 
         if (playerMove == PAPER) {
@@ -44,7 +43,6 @@ public class GameLogic {
             if (computerMove == SCISSORS) {
                 return GameResult.COMPUTER_WIN;
             }
-            return GameResult.DRAW;
         }
 
         if (playerMove == SCISSORS) {
@@ -54,8 +52,7 @@ public class GameLogic {
             if (computerMove == ROCK) {
                 return GameResult.COMPUTER_WIN;
             }
-            return GameResult.DRAW;
         }
-        return GameResult.UNKNOWN;
+        return GameResult.DRAW;
     }
 }
