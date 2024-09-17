@@ -1,6 +1,8 @@
 package com.example.prs.controller;
 
+import com.example.prs.dto.out.GameOutDto;
 import com.example.prs.entity.Game;
+import com.example.prs.entity.Result;
 import com.example.prs.exceptions.GameNotFoundException;
 import com.example.prs.exceptions.GameTerminatedException;
 import com.example.prs.game.Action;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -46,7 +49,15 @@ public class GameController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Game>> findAll(@PathVariable UUID userId) {
-        return ResponseEntity.ok(gameService.getAllGamesOfUser(userId));
+    public ResponseEntity<List<GameOutDto>> findAll(@PathVariable UUID userId) {
+        List<Game> gameEntities = gameService.getAllGamesOfUser(userId);
+        List<GameOutDto> outDtos = gameEntities.stream()
+                .map(e -> {
+                    List<String> mappedResults = e.getResults().stream()
+                            .map(Result::getName)
+                            .collect(Collectors.toList());
+                    return new GameOutDto(e.getGameId(), e.getPlayDate(), mappedResults, e.isTerminated());
+                }).collect(Collectors.toList());
+        return ResponseEntity.ok(outDtos);
     }
 }

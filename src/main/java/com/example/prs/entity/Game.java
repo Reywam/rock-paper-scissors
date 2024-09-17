@@ -21,7 +21,6 @@ public class Game {
 
     @ManyToOne
     @JoinColumn(name = "id")
-    @JsonIgnore
     private Player player;
     private LocalDate playDate;
 
