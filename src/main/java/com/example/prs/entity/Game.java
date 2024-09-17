@@ -22,6 +22,7 @@ public class Game {
     @Type(type = "uuid-char")
     private UUID gameId;
 
+    @Type(type = "uuid-char")
     private UUID userId;
     private LocalDate playDate;
     private GameResult result;

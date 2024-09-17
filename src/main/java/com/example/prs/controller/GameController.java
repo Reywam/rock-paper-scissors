@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -45,8 +46,9 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/statistics")
-    public ResponseEntity<?> statistics() {
-        return ResponseEntity.ok().build();
+    @GetMapping("/{userId}/statistics")
+    public @ResponseBody ResponseEntity<List<Game>> statistics(@PathVariable UUID userId) {
+        List<Game> userGames = repository.findAllByUserId(userId);
+        return ResponseEntity.ok(userGames);
     }
 }
