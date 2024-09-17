@@ -17,11 +17,6 @@ public class Player {
     @Type(type = "uuid-char")
     private UUID id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "player_games",
-            joinColumns = {@JoinColumn(name = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "gameId")}
-    )
+    @OneToMany(mappedBy = "player")
     private List<Game> games;
 }
