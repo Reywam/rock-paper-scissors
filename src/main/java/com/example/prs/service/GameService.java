@@ -31,7 +31,7 @@ public class GameService {
     private final GameLogic gameLogic;
     private final UUID USER_ID = UUID.fromString("ab18c338-b95e-4a2a-aa04-2e950d9fa909");
 
-    public UUID createNewGame() {
+    public Game createNewGame() {
         Player player = userRepository.findOneById(USER_ID);
 
         Game game = new Game();
@@ -40,7 +40,7 @@ public class GameService {
         game.setPlayer(player);
         repository.save(game);
 
-        return game.getGameId();
+        return game;
     }
 
     public GameResult makeMove(UUID gameId, Action playerMove) throws GameNotFoundException, GameTerminatedException {

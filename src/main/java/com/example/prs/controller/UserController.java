@@ -4,6 +4,7 @@ import com.example.prs.dto.out.GameOutDto;
 import com.example.prs.entity.Game;
 import com.example.prs.entity.Player;
 import com.example.prs.entity.Result;
+import com.example.prs.mapper.GameMapper;
 import com.example.prs.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,8 @@ public class UserController {
         Player player = repository.findOneById(userId);
 
         List<GameOutDto> outDtos = player.getGames().stream()
-                .map(e -> {
-                    List<String> mappedResults = e.getResults().stream()
-                            .map(Result::getName)
-                            .collect(Collectors.toList());
-                    return new GameOutDto(e.getGameId(), e.getPlayDate(), mappedResults, e.isTerminated());
-                }).collect(Collectors.toList());
+                .map(GameMapper::map)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(outDtos);
     }
 }

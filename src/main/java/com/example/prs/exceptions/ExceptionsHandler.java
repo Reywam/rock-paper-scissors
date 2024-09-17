@@ -33,7 +33,7 @@ public class ExceptionsHandler {
     public @ResponseBody ErrorInfo handleWrongMoveException(MethodArgumentTypeMismatchException ex) {
         StringJoiner joiner = new StringJoiner(", ");
         Arrays.stream(Action.values()).forEach(e -> joiner.add(e.name()));
-        return new ErrorInfo(String.format("Wrong move. Only %s are allowed", joiner.toString()));
+        return new ErrorInfo(String.format("Wrong move. Only %s are allowed", joiner));
     }
 
 

@@ -2,23 +2,18 @@ package com.example.prs.controller;
 
 import com.example.prs.dto.out.GameOutDto;
 import com.example.prs.entity.Game;
-import com.example.prs.entity.Result;
 import com.example.prs.exceptions.GameNotFoundException;
 import com.example.prs.exceptions.GameTerminatedException;
 import com.example.prs.game.Action;
-import com.example.prs.game.GameLogic;
 import com.example.prs.game.GameResult;
-import com.example.prs.repository.GameRepository;
+import com.example.prs.mapper.GameMapper;
 import com.example.prs.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -28,9 +23,9 @@ public class GameController {
     private final GameService gameService;
 
     @PostMapping("/start")
-    public ResponseEntity<UUID> startGame() {
-        UUID gameId = gameService.createNewGame();
-        return ResponseEntity.ok().body(gameId);
+    public ResponseEntity<GameOutDto> startGame() {
+        Game game = gameService.createNewGame();
+        return ResponseEntity.ok().body(GameMapper.map(game));
     }
 
     @PatchMapping("/{gameId}/move/{playerMove}")
